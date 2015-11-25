@@ -1,7 +1,10 @@
 class UsersController < ApplicationController
+  def doc
+    render json: { message: "Welcome to the bucket list API" }, status: :ok
+  end
+
   def create
     user = User.new(user_params)
-    User.generate_api_key(user)
     if user.save
       render json: user, status: :created
     else
