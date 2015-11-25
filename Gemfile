@@ -6,6 +6,8 @@ gem "rails", "4.2.4"
 
 gem "rails-api"
 gem "bcrypt"
+gem "jwt"
+gem "figaro"
 
 gem "active_model_serializers"
 

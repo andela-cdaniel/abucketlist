@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
-
-  # get 'authorizations/create'
-
-  # get 'authorizations/destroy'
-
-  # get 'users/create'
+  root "users#doc"
 
   post "/user/new" => "users#create"
   post "/auth/login" => "authorizations#create"
@@ -16,4 +11,6 @@ Rails.application.routes.draw do
       resources :items
     end
   end
+
+  match ":not_found" => "users#doc", via: :all, constraints: { not_found: /.*/ }
 end
