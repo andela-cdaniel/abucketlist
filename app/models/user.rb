@@ -39,6 +39,7 @@ class User < ActiveRecord::Base
     expires_at = 12.hours.from_now
     payload = { user_id: user.id, exp: expires_at.to_i }
     { 
+      user: user.username,
       token: JwtTokens.encode(payload),
       expires_on: expires_at.strftime("%b %e, %Y. %l:%M %P") 
     }

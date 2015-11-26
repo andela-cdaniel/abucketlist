@@ -3,7 +3,7 @@ Rails.application.routes.draw do
 
   post "/user/new" => "users#create"
   post "/auth/login" => "authorizations#create"
-  delete "/auth/logout" => "authorizations#destroy"
+  get "/auth/logout" => "authorizations#destroy"
 
   namespace :api do
     namespace :v1 do
