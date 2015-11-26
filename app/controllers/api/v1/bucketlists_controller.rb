@@ -16,7 +16,7 @@ class Api::V1::BucketlistsController < ApplicationController
   end
 
   def show
-    requested_list = fetch_bucket_list_item(params[:id])
+    requested_list = fetch_bucketlist_item(params[:id])
     if requested_list
       render json: requested_list, status: :ok
     else
@@ -25,11 +25,11 @@ class Api::V1::BucketlistsController < ApplicationController
   end
 
   def update
-    requested_list = fetch_bucket_list_item(params[:id])
+    requested_list = fetch_bucketlist_item(params[:id])
     if requested_list
-      require "pry"; binding.pry
+      update_bucketlist(requested_list, bucket_name[:name])
     else
-      head 200
+      render json: { message: "Bucket list was not found" }, status: :not_found
     end
   end
 
@@ -39,9 +39,17 @@ class Api::V1::BucketlistsController < ApplicationController
     params.permit(:name)
   end
 
-  def fetch_bucket_list_item(num)
+  def fetch_bucketlist_item(num)
     current_user_bucketlists = current_user.bucketlists.to_a
     index = num.to_i - 1
     current_user_bucketlists[index] unless index < 0
+  end
+
+  def update_bucketlist(current_list, name)
+    if current_list.update(name: name)
+      render json: current_list, status: :ok
+    else
+      render json: current_list.errors, status: :unprocessable_entity
+    end
   end
 end
