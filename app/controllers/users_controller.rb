@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   def doc
-    render json: { message: "Welcome to the bucket list API" }, status: :ok
+    render json: { 
+                    message: "Welcome to the bucket list API. An invalid request was made",
+                    documentation: documentation_link
+                 },
+           status: :ok
   end
 
   def create

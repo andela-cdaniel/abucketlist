@@ -9,6 +9,8 @@ gem "bcrypt"
 gem "jwt"
 gem "figaro"
 
+gem "coveralls", require: false
+
 gem "active_model_serializers"
 
 group :development, :test do

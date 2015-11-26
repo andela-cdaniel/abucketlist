@@ -13,11 +13,11 @@ class ApplicationController < ActionController::API
       begin
         response = JwtTokens.decode(token)
         true
-      rescue JWT::DecodeError
-        @reason = "The token passed in was invalid"
-        false
       rescue JWT::ExpiredSignature
         @reason = "The token passed in has expired"
+        false
+      rescue JWT::DecodeError
+        @reason = "The token passed in was invalid"
         false
       end
     end
@@ -27,12 +27,28 @@ class ApplicationController < ActionController::API
     render json: 
             { 
               message: "Sorry, you don't have access to this content",
-              reason: reason
+              reason: reason || "No Authorization token sent"
             },
             status: :unauthorized
   end
 
   def current_user
     @current_user || nil
+  end
+
+  def valid_authorization_header_format
+    /Token\stoken=.+/
+  end
+
+  def login(user)
+    User.login(user)
+  end
+
+  def logout(user)
+    User.logout(user)
+  end
+
+  def documentation_link
+    "https://blist.github.io/andela-cdaniel"
   end
 end
