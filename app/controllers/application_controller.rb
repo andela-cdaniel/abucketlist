@@ -30,7 +30,7 @@ class ApplicationController < ActionController::API
     render json: 
             { 
               message: "Sorry, you don't have access to this content",
-              reason: reason || "No Authorization token sent"
+              reason: reason || "No logged in user found with that token"
             },
             status: :unauthorized
   end
