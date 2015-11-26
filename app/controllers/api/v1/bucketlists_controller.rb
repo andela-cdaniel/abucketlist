@@ -33,6 +33,16 @@ class Api::V1::BucketlistsController < ApplicationController
     end
   end
 
+  def destroy
+    requested_list = fetch_bucketlist_item(params[:id])
+    if requested_list
+      delete_bucketlist(requested_list)
+      #require "pry"; binding.pry
+    else
+      render json: { message: "Bucket list was not found" }, status: :not_found
+    end
+  end
+
   private
 
   def bucket_name
@@ -50,6 +60,18 @@ class Api::V1::BucketlistsController < ApplicationController
       render json: current_list, status: :ok
     else
       render json: current_list.errors, status: :unprocessable_entity
+    end
+  end
+
+  def delete_bucketlist(current_list)
+    if current_list.destroy
+      render json: { 
+                      bucketlist: current_list,
+                      message: "Bucket list and all its associated items deleted"
+                   },
+             status: :ok
+    else
+      render json: { message: "An error occurred" }, status: :unprocessable_entity
     end
   end
 end

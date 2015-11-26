@@ -7,8 +7,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :bucketlists
-      resources :items
+      resources :bucketlists, except: [:new, :edit] do
+        resources :items, except: [:new, :edit]
+      end
     end
   end
 
