@@ -2,6 +2,8 @@ class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
   include ActionController::Serialization
 
+  attr_reader :current_user
+
   private
 
   def authorize
@@ -11,8 +13,9 @@ class ApplicationController < ActionController::API
   def authorize_token
     authenticate_with_http_token do |token, options|
       begin
-        response = JwtTokens.decode(token)
-        true
+        payload = JwtTokens.decode(token).first
+        @current_user = User.find(payload["user_id"])
+        @current_user.logged_in ? true : false
       rescue JWT::ExpiredSignature
         @reason = "The token passed in has expired"
         false
@@ -30,10 +33,6 @@ class ApplicationController < ActionController::API
               reason: reason || "No Authorization token sent"
             },
             status: :unauthorized
-  end
-
-  def current_user
-    @current_user || nil
   end
 
   def valid_authorization_header_format

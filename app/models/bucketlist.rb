@@ -4,6 +4,12 @@ class Bucketlist < ActiveRecord::Base
 
   VALID_CHARACTERS = /\A[a-z0-9\s]+\z/i
 
-  validates :name, presence: true, format: { with: VALID_CHARACTERS }
-  validates :user_id, presence: true
+  before_save { self.name = name.capitalize }
+
+  validates :name,
+            presence: true,
+            format: { with: VALID_CHARACTERS },
+            uniqueness: { case_sensitive: false, scope: :created_by }
+
+  validates :created_by, presence: true
 end
