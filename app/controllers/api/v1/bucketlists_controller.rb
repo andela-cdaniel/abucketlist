@@ -1,4 +1,6 @@
 class Api::V1::BucketlistsController < ApplicationController
+  include CurrentBucketList
+  
   before_action :authorize
   
   def index
@@ -37,7 +39,6 @@ class Api::V1::BucketlistsController < ApplicationController
     requested_list = fetch_bucketlist_item(params[:id])
     if requested_list
       delete_bucketlist(requested_list)
-      #require "pry"; binding.pry
     else
       render json: { message: "Bucket list was not found" }, status: :not_found
     end
@@ -47,12 +48,6 @@ class Api::V1::BucketlistsController < ApplicationController
 
   def bucket_name
     params.permit(:name)
-  end
-
-  def fetch_bucketlist_item(num)
-    current_user_bucketlists = current_user.bucketlists.to_a
-    index = num.to_i - 1
-    current_user_bucketlists[index] unless index < 0
   end
 
   def update_bucketlist(current_list, name)
