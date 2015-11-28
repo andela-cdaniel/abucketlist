@@ -4,14 +4,16 @@ class Api::V1::BucketlistsController < ApplicationController
   before_action :authorize
   
   def index
-    render json: current_user.bucketlists, status: :ok
+    all_bucketlist = map_id_to_current_user_list(current_user.bucketlists)
+    render json: all_bucketlist, status: :ok
   end
 
   def create
     bucketlist = Bucketlist.new(bucket_name)
     bucketlist.created_by = current_user.id
     if bucketlist.save
-      render json: bucketlist, status: :created
+      all_bucketlist = map_id_to_current_user_list(current_user.bucketlists)
+      render json: all_bucketlist.last, status: :created
     else
       render json: bucketlist.errors, status: :unprocessable_entity
     end
