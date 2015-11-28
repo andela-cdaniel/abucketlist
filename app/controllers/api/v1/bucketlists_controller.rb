@@ -1,46 +1,41 @@
 class Api::V1::BucketlistsController < ApplicationController
-  include CurrentBucketList
+  include FetchBucketList
   
   before_action :authorize
   
   def index
-    all_bucketlist = map_id_to_current_user_list(current_user.bucketlists)
-    render json: all_bucketlist, status: :ok
+    render json: current_user.bucketlists, status: :ok
   end
 
   def create
     bucketlist = Bucketlist.new(bucket_name)
     bucketlist.created_by = current_user.id
     if bucketlist.save
-      all_bucketlist = map_id_to_current_user_list(current_user.bucketlists)
-      render json: all_bucketlist.last, status: :created
+      render json: bucketlist, status: :created
     else
       render json: bucketlist.errors, status: :unprocessable_entity
     end
   end
 
   def show
-    requested_list = fetch_bucketlist_item(params[:id])
-    if requested_list
-      render json: requested_list, status: :ok
+    if requested_list(params[:id])
+      render json: requested_list(params[:id]), status: :ok
     else
       render json: { message: "Bucket list was not found" }, status: :not_found
     end
   end
 
   def update
-    requested_list = fetch_bucketlist_item(params[:id])
-    if requested_list
-      update_bucketlist(requested_list, bucket_name[:name])
+    if requested_list(params[:id])
+      update_bucketlist(requested_list(params[:id]), bucket_name[:name])
     else
       render json: { message: "Bucket list was not found" }, status: :not_found
     end
   end
 
   def destroy
-    requested_list = fetch_bucketlist_item(params[:id])
-    if requested_list
-      delete_bucketlist(requested_list)
+    if requested_list(params[:id])
+      delete_bucketlist(requested_list(params[:id]))
     else
       render json: { message: "Bucket list was not found" }, status: :not_found
     end
@@ -63,12 +58,12 @@ class Api::V1::BucketlistsController < ApplicationController
   def delete_bucketlist(current_list)
     if current_list.destroy
       render json: { 
-                      bucketlist: current_list,
+                      bucketlist_name: current_list.name,
                       message: "Bucket list and all its associated items deleted"
                    },
              status: :ok
     else
-      render json: { message: "An error occurred" }, status: :unprocessable_entity
+      render json: { message: "An error occurred" }, status: :internal_server_error
     end
   end
 end
