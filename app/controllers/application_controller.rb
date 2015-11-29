@@ -36,7 +36,7 @@ class ApplicationController < ActionController::API
   end
 
   def valid_authorization_header_format
-    /Token\stoken=.+/
+    /\AToken\stoken=[\w\.\-]+\z/
   end
 
   def login(user)

@@ -15,25 +15,26 @@ class AuthorizationsController < ApplicationController
 
   def destroy
     if request.authorization =~ valid_authorization_header_format
+    
       begin
         token = request.authorization.split("=").last
         payload = JwtTokens.decode(token).first
         user = User.find(payload["user_id"])
         logout(user)
-        render json: { 
+        render json: {
                         user: user.username,
                         message: "Successfully logged out"
                      },
                status: :ok
       rescue JWT::DecodeError
-        render json: { 
+        render json: {
                         message: "Please pass in a valid token in the authorization header",
                         documentation: documentation_link
                      },
                status: :unauthorized
       end
     else
-      render json: { 
+      render json: {
                       message: "Please match the authorization header format",
                       documentation: documentation_link
                    },

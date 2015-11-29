@@ -1,16 +1,45 @@
 require "rails_helper"
 
-RSpec.describe "InvalidRequests to API", type: :request do
-  describe "GET root path" do
-    it "returns a message informing the user that an invalid request was made" do
-      get root_path, {}, { "Accept" => "application/json" }
+RSpec.describe "Invalid requests to API", type: :request do
+  describe "Root path" do
+    context "When a get request is made" do
+      it "returns a message informing the user that an invalid request was made" do
+        get root_path, {}, { "Accept" => "application/json" }
 
-      expect(response).to have_http_status(200)
+        expectations_for_invalid_request
+      end
+    end
 
-      body = response_body.map { |key, value| value }
-      
-      expect(body).to match_array(["Welcome to the bucket list API. An invalid request was made",
-                                   "https://github.com/andela-cdaniel/blist"])
+    context "When a post request is made" do
+      it "returns a message informing the user that an invalid request was made" do
+        post root_path, {}, { "Accept" => "application/json" }
+
+        expectations_for_invalid_request
+      end
+    end
+
+    context "When a put request is made" do
+      it "returns a message informing the user that an invalid request was made" do
+        put root_path, {}, { "Accept" => "application/json" }
+
+        expectations_for_invalid_request
+      end
+    end
+
+    context "When a delete request is made" do
+      it "returns a message informing the user that an invalid request was made" do
+        delete root_path, {}, { "Accept" => "application/json" }
+
+        expectations_for_invalid_request
+      end
+    end
+
+    context "When a request doesn't match any available routes" do
+      it "returns a message informing the user that an invalid request was made" do
+        get "/:not_found", {}, { "Accept" => "application/json" }
+
+        expectations_for_invalid_request
+      end
     end
   end
 end
