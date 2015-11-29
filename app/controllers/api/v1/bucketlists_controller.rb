@@ -4,7 +4,16 @@ class Api::V1::BucketlistsController < ApplicationController
   before_action :authorize
   
   def index
-    render json: current_user.bucketlists, status: :ok
+    if pagination_params.present? && search_param.present?
+      head 204
+    elsif pagination_params.present?
+      head 204
+    elsif search_param.present?
+      query = Search.new(search_param[:q]).within(current_user.bucketlists)
+      render json: query, status: :ok
+    else
+      render json: current_user.bucketlists, status: :ok
+    end
   end
 
   def create
@@ -45,6 +54,14 @@ class Api::V1::BucketlistsController < ApplicationController
 
   def bucket_name
     params.permit(:name)
+  end
+
+  def pagination_params
+    params.permit(:page, :limit)
+  end
+
+  def search_param
+    params.permit(:q)
   end
 
   def update_bucketlist(current_list, name)

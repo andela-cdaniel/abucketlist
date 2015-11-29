@@ -50,10 +50,4 @@ class ApplicationController < ActionController::API
   def documentation_link
     "https://blist.github.io/andela-cdaniel"
   end
-
-  def map_id_to_current_user_list(list)
-    list = list.to_a
-    list.each_with_index { |item, index| item.id = (index + 1) }
-    list
-  end
 end
