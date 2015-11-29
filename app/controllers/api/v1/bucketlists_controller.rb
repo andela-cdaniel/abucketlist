@@ -1,8 +1,19 @@
 class Api::V1::BucketlistsController < ApplicationController
+  include FetchBucketList
+  
   before_action :authorize
   
   def index
-    render json: current_user.bucketlists, status: :ok
+    if pagination_params.present? && search_param.present?
+      head 204
+    elsif pagination_params.present?
+      head 204
+    elsif search_param.present?
+      query = Search.new(search_param[:q]).within(current_user.bucketlists)
+      render json: query, status: :ok
+    else
+      render json: current_user.bucketlists, status: :ok
+    end
   end
 
   def create
@@ -16,28 +27,24 @@ class Api::V1::BucketlistsController < ApplicationController
   end
 
   def show
-    requested_list = fetch_bucketlist_item(params[:id])
-    if requested_list
-      render json: requested_list, status: :ok
+    if requested_list(params[:id])
+      render json: requested_list(params[:id]), status: :ok
     else
       render json: { message: "Bucket list was not found" }, status: :not_found
     end
   end
 
   def update
-    requested_list = fetch_bucketlist_item(params[:id])
-    if requested_list
-      update_bucketlist(requested_list, bucket_name[:name])
+    if requested_list(params[:id])
+      update_bucketlist(requested_list(params[:id]), bucket_name[:name])
     else
       render json: { message: "Bucket list was not found" }, status: :not_found
     end
   end
 
   def destroy
-    requested_list = fetch_bucketlist_item(params[:id])
-    if requested_list
-      delete_bucketlist(requested_list)
-      #require "pry"; binding.pry
+    if requested_list(params[:id])
+      delete_bucketlist(requested_list(params[:id]))
     else
       render json: { message: "Bucket list was not found" }, status: :not_found
     end
@@ -49,10 +56,12 @@ class Api::V1::BucketlistsController < ApplicationController
     params.permit(:name)
   end
 
-  def fetch_bucketlist_item(num)
-    current_user_bucketlists = current_user.bucketlists.to_a
-    index = num.to_i - 1
-    current_user_bucketlists[index] unless index < 0
+  def pagination_params
+    params.permit(:page, :limit)
+  end
+
+  def search_param
+    params.permit(:q)
   end
 
   def update_bucketlist(current_list, name)
@@ -66,12 +75,12 @@ class Api::V1::BucketlistsController < ApplicationController
   def delete_bucketlist(current_list)
     if current_list.destroy
       render json: { 
-                      bucketlist: current_list,
+                      bucketlist_name: current_list.name,
                       message: "Bucket list and all its associated items deleted"
                    },
              status: :ok
     else
-      render json: { message: "An error occurred" }, status: :unprocessable_entity
+      render json: { message: "An error occurred" }, status: :internal_server_error
     end
   end
 end

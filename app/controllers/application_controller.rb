@@ -17,7 +17,7 @@ class ApplicationController < ActionController::API
         @current_user = User.find(payload["user_id"])
         @current_user.logged_in ? true : false
       rescue JWT::ExpiredSignature
-        @reason = "The token passed in has expired"
+        @reason = "The token passed in has expired, please login again"
         false
       rescue JWT::DecodeError
         @reason = "The token passed in was invalid"
