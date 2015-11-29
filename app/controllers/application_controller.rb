@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
   private
 
   def authorize
-    authorize_token || revoke_access(@reason)  
+    authorize_token || revoke_access(@reason)
   end
 
   def authorize_token
@@ -27,8 +27,8 @@ class ApplicationController < ActionController::API
   end
 
   def revoke_access(reason)
-    render json: 
-            { 
+    render json:
+            {
               message: "Sorry, you don't have access to this content",
               reason: reason || "No logged in user found with that token"
             },
@@ -48,6 +48,6 @@ class ApplicationController < ActionController::API
   end
 
   def documentation_link
-    "https://blist.github.io/andela-cdaniel"
+    "https://github.com/andela-cdaniel/blist"
   end
 end
