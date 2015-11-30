@@ -11,4 +11,22 @@ module Requests
                                            "https://github.com/andela-cdaniel/blist"]
                                        )
   end
+
+  def expectations_for_no_token
+    expect(response).to have_http_status(401)
+
+    expect(message_body).to match_array(
+                                          ["Sorry, you don't have access to this content",
+                                           "No logged in user found with that token"]
+                                       )
+  end
+
+  def expectations_for_invalid_token
+    expect(response).to have_http_status(401)
+
+    expect(message_body).to match_array(
+                                          ["Sorry, you don't have access to this content",
+                                           "The token passed in was invalid"]
+                                       )
+  end
 end
