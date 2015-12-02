@@ -7,17 +7,17 @@ class Api::V1::ItemsController < ApplicationController
     if requested_list(params[:bucketlist_id])
       save_item(requested_list(params[:bucketlist_id]), item_params[:name])
     else
-      render json: { message: "Bucketlist was not found" }, status: :not_found
+      render json: { message: "Bucket list was not found" }, status: :not_found
     end
   end
 
   def update
     if requested_list(params[:bucketlist_id])
-      item_params[:done].nil? ? 
+      item_params[:done].nil? ?
       vet_item(requested_list(params[:bucketlist_id]), item_params[:name]) :
       vet_item(requested_list(params[:bucketlist_id]), item_params[:name], item_params[:done])
     else
-      render json: { message: "Bucketlist was not found" }, status: :not_found
+      render json: { message: "Bucket list was not found" }, status: :not_found
     end
   end
 
@@ -59,13 +59,11 @@ class Api::V1::ItemsController < ApplicationController
       render json: { message: "No item with that id found in the bucketlist" },
              status: :not_found
     elsif item.destroy
-      render json: { 
+      render json: {
                       item_name: item.name,
-                      message: "Item deleted from bucketlist" 
+                      message: "Item deleted from bucketlist"
                    },
               status: :ok
-    else
-      render json: { message: "An error occurred." }, status: :internal_server_error
     end
   end
 
@@ -73,7 +71,7 @@ class Api::V1::ItemsController < ApplicationController
     accepted_boolean = /\A(f|false)\z|\A(t|true)\z/i
 
     done = "f" unless done.match(accepted_boolean)
-    
+
     item = current_list.items.find_by_id(params[:id])
 
     if item

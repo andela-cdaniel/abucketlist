@@ -29,4 +29,13 @@ module Requests
                                            "The token passed in was invalid"]
                                        )
   end
+
+  def generate_bucketlists_for(user, n)
+    n.times { |n| Bucketlist.create(name: "bucket#{n + 1}", created_by: user.id) }
+  end
+
+  def generate_items_for(user, n)
+    list = user.bucketlists.create(name: "Test List")
+    n.times { |n| list.items.create(name: "item#{n + 1}") }
+  end
 end

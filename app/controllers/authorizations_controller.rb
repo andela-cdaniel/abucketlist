@@ -15,7 +15,7 @@ class AuthorizationsController < ApplicationController
 
   def destroy
     if request.authorization =~ valid_authorization_header_format
-
+    
       begin
         token = request.authorization.split("=").last
         payload = JwtTokens.decode(token).first
