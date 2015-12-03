@@ -8,6 +8,7 @@ class Bucketlist < ActiveRecord::Base
 
   validates :name,
             presence: true,
+            length: { in: 4..144 },
             format: { with: VALID_CHARACTERS },
             uniqueness: { case_sensitive: false, scope: :created_by }
 
