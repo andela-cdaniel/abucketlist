@@ -1,18 +1,12 @@
 class Api::V1::BucketlistsController < ApplicationController
   include FetchBucketList
-  
+
   before_action :authorize
-  
+
   def index
-    if pagination_params.present? && search_param.present?
-      head 204
-    elsif pagination_params.present?
-      head 204
-    elsif search_param.present?
-      query = Search.new(search_param[:q]).within(current_user.bucketlists)
-      render json: query, status: :ok
-    else
-      render json: current_user.bucketlists, status: :ok
+    Designator.get(pagination_params, search_param).
+      handle_requests_for(current_user.bucketlists) do |result|
+        render json: result, status: :ok
     end
   end
 
@@ -74,13 +68,11 @@ class Api::V1::BucketlistsController < ApplicationController
 
   def delete_bucketlist(current_list)
     if current_list.destroy
-      render json: { 
+      render json: {
                       bucketlist_name: current_list.name,
                       message: "Bucket list and all its associated items deleted"
                    },
              status: :ok
-    else
-      render json: { message: "An error occurred" }, status: :internal_server_error
     end
   end
 end

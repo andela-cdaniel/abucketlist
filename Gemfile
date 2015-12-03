@@ -15,13 +15,14 @@ gem "active_model_serializers"
 
 group :development, :test do
   gem "rspec-rails"
+  gem "rspec_api_helpers"
+  gem "pry"
+  gem "pry-rails"
 end
 
 group :development do
   gem "sqlite3"
   gem "spring"
-  gem "pry"
-  gem "pry-rails"
 end
 
 group :production do

@@ -3,13 +3,17 @@ class Api::V1::BucketlistsController
     attr_reader :query
 
     def initialize(query)
-      @query = query
+      @query = query[:q]
+    end
+
+    def self.for(query)
+      new(query)
     end
 
     def within(list)
       search_result = list.where("name like ?", "%#{query}%")
-      search_result.blank? ? 
-                           { message: "No result found matching #{query}" } : 
+      search_result.blank? ?
+                           { message: "No result found matching #{query}" } :
                            search_result
     end
   end
