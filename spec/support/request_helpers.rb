@@ -30,8 +30,8 @@ module Requests
                                        )
   end
 
-  def generate_bucketlists_for(user, n)
-    n.times { |n| Bucketlist.create(name: "bucket#{n + 1}", created_by: user.id) }
+  def generate_bucketlists_for(user, n, name="bucket")
+    n.times { |n| Bucketlist.create(name: "#{name}#{n + 1}", created_by: user.id) }
   end
 
   def generate_items_for(user, n)

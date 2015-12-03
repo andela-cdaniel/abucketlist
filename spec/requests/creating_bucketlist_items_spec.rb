@@ -37,7 +37,11 @@ RSpec.describe "Creating a bucketlist item", type: :request do
                                               }
 
         expect(response).to have_http_status(422)
-        expect(response_body[:name]).to match_array(["can't be blank", "is invalid"])
+        expect(response_body[:name]).to match_array(
+                                                      ["can't be blank",
+                                                       "is invalid",
+                                                       "is too short (minimum is 4 characters)"]
+                                                   )
       end
 
       it "Doesn't create a bucket list item when an invalid parameter is passed in" do

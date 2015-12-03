@@ -33,7 +33,11 @@ RSpec.describe "Updating a Bucketlist", type: :request do
                                          "Authorization" => "Token token=#{data[:token]}"
                                        }
         expect(response).to have_http_status(422)
-        expect(response_body[:name]).to match_array(["can't be blank", "is invalid"])
+        expect(response_body[:name]).to match_array(
+                                                      ["can't be blank",
+                                                       "is invalid",
+                                                       "is too short (minimum is 4 characters)"]
+                                                   )
       end
 
       it "Doesn't update a bucketlist when an invalid parameter is passed in" do
