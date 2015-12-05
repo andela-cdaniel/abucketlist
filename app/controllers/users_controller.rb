@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
+  def index
+    redirect_to documentation_link, status: 302
+  end
+
   def doc
-    render json: { 
+    render json: {
                     message: "Welcome to the bucket list API. An invalid request was made",
                     documentation: documentation_link
                  },

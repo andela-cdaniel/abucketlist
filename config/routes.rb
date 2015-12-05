@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "users#doc"
+  root "users#index"
 
   post "/user/new" => "users#create"
   post "/auth/login" => "authorizations#create"

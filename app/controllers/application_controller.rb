@@ -48,6 +48,6 @@ class ApplicationController < ActionController::API
   end
 
   def documentation_link
-    "https://github.com/andela-cdaniel/blist"
+    "https:/andela-cdaniel.github.io/slate"
   end
 end
