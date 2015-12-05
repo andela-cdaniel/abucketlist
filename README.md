@@ -1,4 +1,5 @@
-# A-Bucketlist [![Build Status](https://travis-ci.org/andela-cdaniel/blist.svg?branch=master)](https://travis-ci.org/andela-cdaniel/blist) [![Code Climate](https://codeclimate.com/github/andela-cdaniel/blist/badges/gpa.svg)](https://codeclimate.com/github/andela-cdaniel/blist)
+# A-Bucketlist [![Circle CI](https://circleci.com/gh/andela-cdaniel/abucketlist/tree/master.svg?style=svg)](https://circleci.com/gh/andela-cdaniel/abucketlist/tree/master)
+[![Coverage Status](https://coveralls.io/repos/andela-cdaniel/abucketlist/badge.svg?branch=master&service=github)](https://coveralls.io/github/andela-cdaniel/abucketlist?branch=master)
 
 A simple API for creating and storing bucket list items.
 
