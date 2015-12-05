@@ -8,7 +8,7 @@ module Requests
 
     expect(message_body).to match_array(
                                           ["Welcome to the bucket list API. An invalid request was made",
-                                           "https://github.com/andela-cdaniel/blist"]
+                                           "https://andela-cdaniel.github.io/slate"]
                                        )
   end
 

@@ -3,10 +3,11 @@ require "rails_helper"
 RSpec.describe "Invalid requests to API", type: :request do
   describe "Root path" do
     context "When a get request is made" do
-      it "returns a message informing the user that an invalid request was made" do
+      it "redirects to the documentation page online" do
         get root_path, {}, { "Accept" => "application/json" }
 
-        expectations_for_invalid_request
+        expect(response.status).to eql(302)
+        expect(response.location).to eql("https://andela-cdaniel.github.io/slate")
       end
     end
 

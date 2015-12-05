@@ -10,7 +10,7 @@ RSpec.describe "Unauthorized requests to API", type: :request do
 
         expect(message_body).to match_array(
                                               ["Please match the authorization header format",
-                                               "https://github.com/andela-cdaniel/blist"]
+                                               "https://andela-cdaniel.github.io/slate"]
                                            )
       end
     end
@@ -26,7 +26,7 @@ RSpec.describe "Unauthorized requests to API", type: :request do
 
         expect(message_body).to match_array(
                                               ["Please pass in a valid token in the authorization header",
-                                               "https://github.com/andela-cdaniel/blist"]
+                                               "https://andela-cdaniel.github.io/slate"]
                                            )
       end
     end
