@@ -4,6 +4,13 @@ class ApplicationController < ActionController::API
 
   attr_reader :current_user
 
+  def doc
+    render json: {
+      message: "Welcome to the bucket list API. An invalid request was made",
+      documentation: documentation_link
+    }, status: :ok
+  end
+
   private
 
   def authorize
@@ -11,7 +18,7 @@ class ApplicationController < ActionController::API
   end
 
   def authorize_token
-    authenticate_with_http_token do |token, options|
+    authenticate_with_http_token do |token|
       begin
         payload = JwtTokens.decode(token).first
         @current_user = User.find(payload["user_id"])
@@ -27,12 +34,10 @@ class ApplicationController < ActionController::API
   end
 
   def revoke_access(reason)
-    render json:
-            {
-              message: "Sorry, you don't have access to this content",
-              reason: reason || "No logged in user found with that token"
-            },
-            status: :unauthorized
+    render json: {
+      message: "Sorry, you don't have access to this content",
+      reason: reason || "No logged in user found with that token"
+    }, status: :unauthorized
   end
 
   def valid_authorization_header_format
@@ -48,6 +53,6 @@ class ApplicationController < ActionController::API
   end
 
   def documentation_link
-    "https://andela-cdaniel.github.io/slate"
+    "https://a-bucketlist.herokuapp.com"
   end
 end

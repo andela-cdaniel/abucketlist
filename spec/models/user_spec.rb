@@ -19,7 +19,7 @@ RSpec.describe User, type: :model do
     end
 
     context "When the length of the username is greater than 50" do
-      let(:username) { "a"*51 }
+      let(:username) { "a" * 51 }
       it { expect(user).to be_invalid }
     end
 
@@ -45,12 +45,12 @@ RSpec.describe User, type: :model do
     end
 
     context "When the length of the password is less than 8 characters" do
-      let(:password) { "s"*7 }
+      let(:password) { "s" * 7 }
       it { expect(user).to be_invalid }
     end
 
     context "When the length of the password is greater than 255 characters" do
-      let(:password) { "pass"*255 }
+      let(:password) { "pass" * 255 }
       it { expect(user).to be_invalid }
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe User, type: :model do
     context "When the user credentials are correctly matched" do
       it "Returns the user record" do
         user.save
-        result = User.authorize({username: username, password: password})
+        result = User.authorize(username: username, password: password)
         expect(result).to be_a User
       end
     end
@@ -67,7 +67,7 @@ RSpec.describe User, type: :model do
     context "When the user credentials are invalid" do
       it "Returns nil" do
         user.save
-        result = User.authorize({username: "ikem", password: "notvalid"})
+        result = User.authorize(username: "ikem", password: "notvalid")
         expect(result).to be_nil
       end
     end
@@ -119,7 +119,8 @@ RSpec.describe User, type: :model do
       expect(user.bucketlists.first.items.first.bucketlist_id).to eql("1")
     end
 
-    it "When a user is destroyed, all it's associated bucketlist are destroyed as well" do
+    it "When a user is destroyed, all it's associated
+        bucketlist are destroyed as well" do
       user.save
       generate_bucketlists_for(user, 5)
       expect(user.bucketlists.length).to eql(5)

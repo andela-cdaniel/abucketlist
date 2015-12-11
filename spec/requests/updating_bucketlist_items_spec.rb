@@ -1,7 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "Updating a Bucketlist item", type: :request do
-  subject(:user) { User.create(username: username, password: password, logged_in: true) }
+  subject(:user) do
+    User.create(username: username, password: password, logged_in: true)
+  end
+
   let(:username) { "Ikem" }
   let(:password) { "securepassword" }
   let(:data) { User.generate_jwt_token(user) }
@@ -15,11 +18,9 @@ RSpec.describe "Updating a Bucketlist item", type: :request do
         generate_items_for(user, 1)
 
         put api_v1_bucketlist_item_path(1, id: 1, name: item_name, done: done),
-                                       {},
-                                       {
-                                        "Accept" => "application/json",
-                                        "Authorization" => "Token token=#{data[:token]}"
-                                       }
+            {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         expect(response).to have_http_status(200)
         expect(response_body[:item][:name]).to eql("New item name")
@@ -30,11 +31,9 @@ RSpec.describe "Updating a Bucketlist item", type: :request do
         generate_items_for(user, 1)
 
         put api_v1_bucketlist_item_path(1, id: 1, name: item_name),
-                                       {},
-                                       {
-                                        "Accept" => "application/json",
-                                        "Authorization" => "Token token=#{data[:token]}"
-                                       }
+            {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         expect(response).to have_http_status(200)
         expect(response_body[:item][:name]).to eql("New item name")
@@ -45,40 +44,37 @@ RSpec.describe "Updating a Bucketlist item", type: :request do
         generate_items_for(user, 1)
 
         put api_v1_bucketlist_item_path(1, id: 1, done: done),
-                                       {},
-                                       {
-                                        "Accept" => "application/json",
-                                        "Authorization" => "Token token=#{data[:token]}"
-                                       }
+            {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         expect(response).to have_http_status(200)
         expect(response_body[:item][:name]).to eql("Item1")
         expect(response_body[:item][:done]).to be true
       end
 
-      it "Updates a bucketlist item with defaults when no parameter is present" do
+      it "Updates a bucketlist item with defaults
+            when no parameter is present" do
         generate_items_for(user, 1)
 
         put api_v1_bucketlist_item_path(1, id: 1),
-                                       {},
-                                       {
-                                        "Accept" => "application/json",
-                                        "Authorization" => "Token token=#{data[:token]}"
-                                       }
+            {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         expect(response).to have_http_status(200)
         expect(response_body[:item][:name]).to eql("Item1")
         expect(response_body[:item][:done]).to be false
       end
 
-      it "Updates a bucketlist item with the default if the done parameter is invalid" do
+      it "Updates a bucketlist item with the default
+            if the done parameter is invalid" do
         generate_items_for(user, 1)
 
-        put api_v1_bucketlist_item_path(1, id: 1, name: item_name, done: "not_allowed"),
-                                       {},
-                                       { "Accept" => "application/json",
-                                         "Authorization" => "Token token=#{data[:token]}"
-                                       }
+        put api_v1_bucketlist_item_path(1, id: 1, name: item_name, done: "not"),
+            {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         expect(response).to have_http_status(200)
         expect(response_body[:item][:name]).to eql("New item name")
@@ -93,22 +89,20 @@ RSpec.describe "Updating a Bucketlist item", type: :request do
         generate_items_for(user, 1)
 
         put api_v1_bucketlist_item_path(1, id: 1, name: item_name),
-                                       {},
-                                       {
-                                         "Accept" => "application/json",
-                                         "Authorization" => "Token token=#{data[:token]}"
-                                       }
+            {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         expect(response).to have_http_status(422)
         expect(response_body[:name]).to match_array(["is invalid"])
       end
 
-      it "Returns not found if the bucketlist containing the item was not found" do
+      it "Returns not found if the bucketlist
+            containing the item was not found" do
         put api_v1_bucketlist_item_path(1, id: 1), {},
-                                                   {
-                                                     "Accept" => "application/json",
-                                                     "Authorization" => "Token token=#{data[:token]}"
-                                                   }
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
+
         expect(response).to have_http_status(404)
         expect(response_body[:message]).to eql("Bucket list was not found")
       end
@@ -117,12 +111,13 @@ RSpec.describe "Updating a Bucketlist item", type: :request do
         generate_items_for(user, 1)
 
         put api_v1_bucketlist_item_path(1, id: 24), {},
-                                                    {
-                                                      "Accept" => "application/json",
-                                                      "Authorization" => "Token token=#{data[:token]}"
-                                                    }
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
+
         expect(response).to have_http_status(404)
-        expect(response_body[:message]).to eql("No item with that id found in the bucketlist")
+        expect(response_body[:message]).to eql(
+          "No item with that id found in the bucketlist"
+        )
       end
     end
   end

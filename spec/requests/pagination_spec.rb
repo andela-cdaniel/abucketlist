@@ -1,7 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "Paginated json responses", type: :request do
-  subject(:user) { User.create(username: username, password: password, logged_in: true) }
+  subject(:user) do
+    User.create(username: username, password: password, logged_in: true)
+  end
+
   let(:username) { "Ikem" }
   let(:password) { "securepassword" }
   let(:data) { User.generate_jwt_token(user) }
@@ -11,12 +14,9 @@ RSpec.describe "Paginated json responses", type: :request do
       it "Returns a response matching the passed in parameters" do
         generate_bucketlists_for(user, 30)
 
-        get api_v1_bucketlists_path(page: "2", limit: 20),
-                                   {},
-                                   {
-                                     "Accept" => "application/json",
-                                      "Authorization" => "Token token=#{data[:token]}"
-                                    }
+        get api_v1_bucketlists_path(page: "2", limit: 20), {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         meta = response_body[:bucketlists].pop[:meta]
         expect(response).to have_http_status(200)
@@ -33,11 +33,10 @@ RSpec.describe "Paginated json responses", type: :request do
         generate_bucketlists_for(user, 30)
 
         get api_v1_bucketlists_path(limit: 2), {},
-                                               {
-                                                 "Accept" => "application/json",
-                                                 "Authorization" => "Token token=#{data[:token]}"
-                                               }
-        meta = response_body[:bucketlists].pop[:meta]
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
+
+        response_body[:bucketlists].pop[:meta]
         expect(response).to have_http_status(200)
         expect(response_body[:bucketlists].length).to eql(2)
       end
@@ -47,12 +46,9 @@ RSpec.describe "Paginated json responses", type: :request do
       it "The limit defaults to 20 records" do
         generate_bucketlists_for(user, 30)
 
-        get api_v1_bucketlists_path(page: "1"),
-                                   {},
-                                   {
-                                     "Accept" => "application/json",
-                                      "Authorization" => "Token token=#{data[:token]}"
-                                    }
+        get api_v1_bucketlists_path(page: "1"), {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         meta = response_body[:bucketlists].pop[:meta]
         expect(response).to have_http_status(200)
@@ -68,12 +64,9 @@ RSpec.describe "Paginated json responses", type: :request do
       it "The limit defaults to 100 records per page" do
         generate_bucketlists_for(user, 300)
 
-        get api_v1_bucketlists_path(page: "1", limit: 200),
-                                   {},
-                                   {
-                                     "Accept" => "application/json",
-                                      "Authorization" => "Token token=#{data[:token]}"
-                                    }
+        get api_v1_bucketlists_path(page: "1", limit: 200), {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         meta = response_body[:bucketlists].pop[:meta]
         expect(response).to have_http_status(200)
@@ -90,17 +83,17 @@ RSpec.describe "Paginated json responses", type: :request do
         generate_bucketlists_for(user, 20)
         generate_bucketlists_for(user, 10, "example")
 
-        get api_v1_bucketlists_path(q: "example", page: "1", limit: 10),
-                                   {},
-                                   {
-                                     "Accept" => "application/json",
-                                      "Authorization" => "Token token=#{data[:token]}"
-                                    }
+        get api_v1_bucketlists_path(q: "example", page: "1", limit: 10), {},
+            "Accept" => "application/json",
+            "Authorization" => "Token token=#{data[:token]}"
 
         meta = response_body[:bucketlists].pop[:meta]
+        matched = response_body[:bucketlists].all? do |b|
+          b[:name].match(/example/i)
+        end
         expect(response).to have_http_status(200)
         expect(response_body[:bucketlists].length).to eql(10)
-        expect(response_body[:bucketlists].all? { |b| b[:name].match(/example/i) }).to be true
+        expect(matched).to be true
         expect(meta[:current_page]).to eql(1)
         expect(meta[:next_page]).to be_nil
         expect(meta[:total_pages]).to eql(1)

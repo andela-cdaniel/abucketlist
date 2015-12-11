@@ -19,7 +19,7 @@ RSpec.describe Bucketlist, type: :model do
     end
 
     context "When the length of the name is greater than 144" do
-      let(:name) { "aa"*144 }
+      let(:name) { "aa" * 144 }
       it { expect(bucketlist).to be_invalid }
     end
 
@@ -61,9 +61,11 @@ RSpec.describe Bucketlist, type: :model do
       expect(bucketlist.items.first.name).to eql("Bucket items")
     end
 
-    it "When a bucketlist is destroyed, all it's associated items are destroyed as well" do
+    it "When a bucketlist is destroyed, all it's
+        associated items are destroyed as well" do
       bucketlist.save
-      i = Item.create(name: "Bucket item", bucketlist_id: 1)
+      Item.create(name: "Bucket item", bucketlist_id: 1)
+
       expect(bucketlist.items.length).to eql(1)
       bucketlist.destroy
       expect(bucketlist.items.length).to eql(0)

@@ -1,0 +1,837 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>A-Bucketlist API Reference</title>
+
+    <link href="stylesheets/screen.css" rel="stylesheet" type="text/css" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+      <script src="javascripts/all.js" type="text/javascript"></script>
+
+      <script>
+        $(function() {
+          setupLanguages(["shell"]);
+        });
+      </script>
+  </head>
+
+  <body class="index">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <h3 class="logo">A Bucketlist</h3>
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">cURL</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="introduction">Introduction</h1>
+<pre class="highlight shell"><code>   ___    ______            _        _   _ _     _   
+ / _ <span class="se">\ </span>  | ___ <span class="se">\ </span>         | |      | | | <span class="o">(</span>_<span class="o">)</span>   | |  
+/ /_<span class="se">\ \ </span> | |_/ /_   _  ___| | _____| |_| |_ ___| |_ 
+|  _  |   | ___ | | | |/ __| |/ / _ | __| | / __| __|
+| | | |  | |_/ | |_| | <span class="o">(</span>__|   |  __| |_| | <span class="se">\_</span>_ | |_ 
+<span class="se">\_</span>| |_/  <span class="se">\_</span>___/ <span class="se">\_</span>_,_|<span class="se">\_</span>__|_|<span class="se">\_\_</span>__|<span class="se">\_</span>_|_|_|___/<span class="se">\_</span>_|
+</code></pre>
+
+<p>Welcome to  the A-Bucketlist API documentation. This API exposes various endpoints which allows for creating, retrieving, updating and deleting bucketlists.</p>
+
+<p>On the right is an example terminal containing various code examples that show you how to better use the API.</p>
+
+<p>On the left are navigation helpers to help you search this document or jump through to specific sections.</p>
+
+<ul>
+<li>The base url for the API is <a href="https://a-bucketlist.herokuapp.com">https://a-bucketlist.herokuapp.com</a></li>
+<li>Current version of API is version 1</li>
+</ul>
+
+          <h1 id="creating-an-account">Creating an account</h1>
+
+<blockquote>
+<p>Request format</p>
+</blockquote>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X POST -d <span class="se">\ </span>
+<span class="s2">"username=testuser&amp;password=s3cur3p@ssw0rd!"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/user/new"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns a json response like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"username"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testuser"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"created_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec 3, 2015"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  In order to gain full access to all available API endpoints, you need to register for a user account.
+</aside>
+
+<p>You create an account by making a post request to the <code class="prettyprint">/user/new</code> endpoint and passing in valid parameters as part of the request. </p>
+
+<p>The parameters to be passed in as part of the url request are:</p>
+
+<p><strong>username:</strong> Any alphanumeric character between 2 and 50 characters.</p>
+
+<p><strong>password:</strong> Any word or non word character between 8 and 255 characters.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://a-bucketlist.herokuapp.com/user/new</code></p>
+
+          <h1 id="logging-in">Logging in</h1>
+
+<blockquote>
+<p>Request format</p>
+</blockquote>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -i -X POST -d <span class="se">\ </span>
+<span class="s2">"username=testuser&amp;password=s3cur3p@ssw0rd!"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/auth/login"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns a json response like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Logged in"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"information"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testuser"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"eyJ0eXAiOiJ9.eyJ1c2VyX2l9.SkvNknvQlQA"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"expires_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec 4, 2015. 5:29 am"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<blockquote>
+<p><strong>Note:</strong> The above token is just for example purposes 
+and is not actually a valid token</p>
+</blockquote>
+
+<p>You log in to your account by making a post request to the <code class="prettyprint">/auth/login</code> endpoint and passing in valid parameters as part of the request.</p>
+
+<p>Upon successful login, an api token is generated for your account and this token has to be passed (using headers) along with every request when you want to make bucketlist operations.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://a-bucketlist.herokuapp.com/auth/login</code></p>
+
+          <h1 id="logging-out">Logging out</h1>
+
+<blockquote>
+<p>Request format</p>
+</blockquote>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -i -X GET -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/auth/login"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns a json response like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"user"</span><span class="p">:</span><span class="w"> </span><span class="s2">"testuser"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Successfully logged out"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>You log out of your account by making a get request to the <code class="prettyprint">/auth/logout</code> endpoint and passing in your api token in the authorization header.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://a-bucketlist.herokuapp.com/auth/logout</code></p>
+
+          <h1 id="authentication">Authentication</h1>
+
+<blockquote>
+<p>To authorize, use this code:</p>
+</blockquote>
+<pre class="highlight shell"><code><span class="c"># With curl, you can just pass </span>
+<span class="c"># the correct header with each request</span>
+
+curl <span class="s2">"api_endpoint_here"</span>
+  -H <span class="s2">"Authorization: Token token=entertokenhere"</span>
+</code></pre>
+
+<blockquote>
+<p>Make sure to replace <code class="prettyprint">entertokenhere</code> with your API key.</p>
+</blockquote>
+
+<p>A-Bucketlist uses tokens for authentication to the various endpoints for creating, updating, retrieving and deleting bucketlists. </p>
+
+<p>Upon successful login, a unique token is generated and assigned to your account and it is this token that you pass along in the header when querying the API for bucketlist operations.</p>
+
+<p>A-Bucketlist expects the API token to be included in all API requests to the server in a header that looks like the following:</p>
+
+<p><code class="prettyprint">Authorization: Token token=entertokenhere</code></p>
+
+<aside class="notice">
+  You must replace <code>entertokenhere</code> with your API token.
+</aside>
+
+<aside class="notice">
+    All generated tokens have a lifetime of 12 hours after which they expire and become invalid. To request for a new one, just make a new request to the `/auth/login` endpoint passing in valid parameters as part of the request.    
+</aside>
+
+<aside class="warning">
+  <strong>Note:</strong>
+  If you don&rsquo;t pass in the token as specified, you won&rsquo;t be able to gain access to the API endpoints for bucketlist operations even if you are logged in.
+</aside>
+
+          <h1 id="creating-a-bucketlist">Creating a bucketlist</h1>
+
+<blockquote>
+<p>Request format: Creating a bucketlist</p>
+</blockquote>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X POST -d <span class="s2">"name=Bucket1"</span> -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns a json response like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"bucketlist"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bucket1"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:29 pm"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:29 pm"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>A new bucketlist is created by making a post request to the <code class="prettyprint">/api/v1/bucketlists</code> endpoint and passing in valid parameters as part of the request.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://a-bucketlist.herokuapp.com/api/v1/bucketlists</code></p>
+
+<h3 id="query-parameter-s-for-creating-a-bucketlist">Query parameter(s) for creating a bucketlist</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Allowed Characters</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>false</td>
+<td>Alphanumeric + space character</td>
+<td>The name of the bucketlist</td>
+</tr>
+</tbody></table>
+
+<h2 id="adding-items-to-a-bucket-list">Adding items to a bucket list</h2>
+
+<blockquote>
+<p>Request format: Adding items to a bucketlist</p>
+</blockquote>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X POST -d <span class="s2">"name=Item1"</span> -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists/1/items"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns a json response like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"item"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Item1"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"done"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  8:09 pm"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  8:09 pm"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>Items are added to a bucketlist by making a post request to the <code class="prettyprint">/api/v1/bucketlist/&lt;id&gt;/items</code> endpoint and passing in valid parameters as part of the request.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">POST https://a-bucketlist.herokuapp.com/api/v1/bucketlists/9/items</code></p>
+
+<h3 id="query-parameter-s-for-adding-items-to-a-bucketlist">Query parameter(s) for adding items to a bucketlist</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Allowed Characters</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>false</td>
+<td>Alphanumeric + space character</td>
+<td>The name of the bucketlist item</td>
+</tr>
+</tbody></table>
+
+          <h1 id="retrieving-bucketlists">Retrieving bucketlists</h1>
+
+<h2 id="get-all-bucketlists">Get all bucketlists</h2>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X GET -d <span class="s2">"name=Bucket1"</span> -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"bucketlists:"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bucket1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">29</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bucket2"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+       </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bucket3"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Itemone"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"done"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  8:09 pm"</span><span class="p">,</span><span class="w">
+            </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  8:09 pm"</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>This endpoint is used to retrieve all bucketlists created by a particular user.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://a-bucketlist.herokuapp.com/api/v1/bucketlists</code></p>
+
+<h2 id="get-a-single-bucketlist">Get a single bucketlist</h2>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X GET -d <span class="s2">"name=Bucket1"</span> -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists/28"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"bucketlist:"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bucket1"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>This endpoint is used to retrieve one specific bucketlist created by a particular user. A bucketlist can be retrieved by making a get request to the <code class="prettyprint">/api/v1/bucketlists/&lt;id&gt;</code> endpoint.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://a-bucketlist.herokuapp.com/api/v1/bucketlists/9</code></p>
+
+          <h1 id="updating-bucketlists">Updating bucketlists</h1>
+
+<h2 id="update-a-bucketlist">Update a bucketlist</h2>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X PUT -d <span class="s2">"name=new bucket"</span> -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists/28"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+  </span><span class="nt">"bucketlist"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New bucket"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  4, 2015.  5:27 am"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>You update a bucketlist by making a put request
+to the <code class="prettyprint">/api/v1/bucketlists/&lt;id&gt;</code> endpoint and passing in valid parameters as part of the request.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT https://a-bucketlist.herokuapp.com/api/v1/bucketlists/9</code></p>
+
+<h3 id="query-parameter-s-for-updating-a-bucketlist">Query parameter(s) for updating a bucketlist</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Allowed Characters</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>false</td>
+<td>Alphanumeric + space character</td>
+<td>The new name of the bucketlist</td>
+</tr>
+</tbody></table>
+
+<h2 id="update-a-single-bucketlist-item">Update a single bucketlist item</h2>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X PUT -d <span class="s2">"name=New item&amp;done=true"</span> -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists/28/items/17"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"item"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">17</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New item"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"done"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  4, 2015.  5:30 am"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  4, 2015.  5:30 am"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>This endpoint is used to update a specific bucketlist item created by a particular user. A bucketlist item can be updated by making a put request to the <code class="prettyprint">/api/v1/bucketlists/&lt;id&gt;/items/&lt;item_id&gt;</code> endpoint.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">PUT https://a-bucketlist.herokuapp.com/api/v1/bucketlists/9/items/1</code></p>
+
+<h3 id="query-parameter-s-for-updating-a-bucketlist-item">Query parameter(s) for updating a bucketlist item</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Allowed Characters</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>true</td>
+<td>Alphanumeric + space character</td>
+<td>The new name of the bucketlist</td>
+</tr>
+<tr>
+<td>done</td>
+<td>true</td>
+<td>t or f or long form of true or false</td>
+<td>The status of the item. True for when the item has been done and false for when it is not yet done.</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+    You don&rsquo;t have to pass in both parameters when making a request to this endpoint. If you need to update only the name, just pass in only the name as part of the request and the same statement holds true if you need to update only the done status.
+    
+    If no new information is passed along with the request, then no changes are made.
+</aside>
+
+<aside class="warning">
+    <strong>Note:</strong> Passing invalid parameters to either &lsquo;name&rsquo; or 'done&rsquo; causes the API to make no change to the bucketlist item.
+</aside>
+
+          <h1 id="deleting-bucketlists">Deleting bucketlists</h1>
+
+<h2 id="delete-a-bucketlist">Delete a bucketlist</h2>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X DELETE -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists/28"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"bucketlist_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New bucket"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Bucket list and all its associated items deleted"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>You delete a bucketlist by making a delete request
+to the <code class="prettyprint">/api/v1/bucketlists/&lt;id&gt;</code> endpoint and passing in valid parameters as part of the request.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE https://a-bucketlist.herokuapp.com/api/v1/bucketlists/9</code></p>
+
+<h2 id="delete-a-single-bucketlist-item">Delete a single bucketlist item</h2>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X DELETE -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists/28/items/17"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"item_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"New item"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Item deleted from bucketlist"</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>This endpoint is used to delete a specific bucketlist item created by a particular user. A bucketlist item can be deleted by making a delete request to the <code class="prettyprint">/api/v1/bucketlists/&lt;id&gt;/items/&lt;item_id&gt;</code> endpoint.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">DELETE https://a-bucketlist.herokuapp.com/api/v1/bucketlists/9/items/1</code></p>
+
+          <h1 id="searching-by-bucketlist-name">Searching by bucketlist name</h1>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X GET -d <span class="s2">"q=do"</span> -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"bucketlists:"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Things to do"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"To do list"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>This endpoint is used to search for bucketlists by their name.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://a-bucketlist.herokuapp.com/api/v1/bucketlists?q=query</code></p>
+
+<h3 id="query-parameter-s-for-searching-bucketlists">Query parameter(s) for searching bucketlists</h3>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Optional</th>
+<th>Allowed Characters</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>q</td>
+<td>false</td>
+<td>All word and non-word characters</td>
+<td>The name of the bucketlist(s) to search for</td>
+</tr>
+</tbody></table>
+
+          <h1 id="pagination">Pagination</h1>
+<pre class="highlight shell"><code><span class="c"># The backward slashes help to write </span>
+<span class="c"># the command on multiple lines</span>
+
+curl -X GET -d <span class="s2">"page=1&amp;limit=2"</span> -H <span class="se">\</span>
+<span class="s2">"Authorization: Token token=entertokenhere"</span> <span class="se">\</span>
+<span class="s2">"https://a-bucketlist.herokuapp.com/api/v1/bucketlists"</span>
+</code></pre>
+
+<blockquote>
+<p>The above command returns JSON structured like this:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="w">  </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"bucketlists:"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Things to do"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"To do list"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"created_by"</span><span class="p">:</span><span class="w"> </span><span class="s2">"6"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"date_created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"last_updated_on"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Dec  3, 2015.  6:27 pm"</span><span class="p">,</span><span class="w">
+        </span><span class="nt">"items"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"meta"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+                </span><span class="nt">"current_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"next_page"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"total_pages"</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
+                </span><span class="nt">"total_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="w">
+            </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<aside class="notice">
+  Accessing this API endpoint requires an authorized user with valid API token.
+</aside>
+
+<p>This endpoint is used to request for a paginated response. The default amount of result returned per page is 20 and no greater than 100 records can be returned per page  for any request.</p>
+
+<h3 id="http-request">HTTP Request</h3>
+
+<p><code class="prettyprint">GET https://a-bucketlist.herokuapp.com/api/v1/bucketlists</code></p>
+
+<h3 id="meta-information">Meta information</h3>
+
+<p>The meta information displays helpful information about the paginated response. The table below lists the values and their meanings:</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>current_page</td>
+<td>Shows the current page number</td>
+</tr>
+<tr>
+<td>next</td>
+<td>Shows the page number for the immediate next page of results</td>
+</tr>
+<tr>
+<td>total_pages</td>
+<td>Shows the total amount of pages based on the page and limit parameters</td>
+</tr>
+<tr>
+<td>total_count</td>
+<td>Shows the total amount of records returned</td>
+</tr>
+</tbody></table>
+
+<aside class="notice">
+    <strong>Note:</strong> You can paginate a search result by adding the page and limit parameters as part of the search query.
+</aside>
+
+          <h1 id="endpoints">Endpoints</h1>
+
+<aside class="notice">
+    All exposed endpoints are summarised in the table below:
+</aside>
+
+<table><thead>
+<tr>
+<th>Action</th>
+<th>Endpoint</th>
+<th>Description</th>
+<th>Public Access</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>POST</td>
+<td>/user/new</td>
+<td>Creates a user account</td>
+<td>True</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/auth/login</td>
+<td>Logs a user into the user&rsquo;s account</td>
+<td>True</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/auth/logout</td>
+<td>Logs a user out</td>
+<td>False</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/bucketlists</td>
+<td>Creates a new bucketlist</td>
+<td>False</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/bucketlists</td>
+<td>Get all bucketlists</td>
+<td>False</td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/bucketlists/<id></td>
+<td>Get a single bucketlist</td>
+<td>False</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/bucketlists/<id></td>
+<td>Update bucketlist with the specified id</td>
+<td>False</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/bucketlists/<id></td>
+<td>Delete bucketlist with the specified id</td>
+<td>False</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/bucketlists/<id>/items</td>
+<td>Adds a new item to the bucketlist with the specified id</td>
+<td>False</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>/bucketlists/<id>/items/<item_id></td>
+<td>Update a single bucket list item that matches specified ids</td>
+<td>False</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>/bucketlists/<id>/items/<item_id></td>
+<td>Delete a single bucket list item that matches specified ids</td>
+<td>False</td>
+</tr>
+</tbody></table>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">cURL</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -19,7 +19,7 @@ RSpec.describe Item, type: :model do
     end
 
     context "When the length of the name is greater than 144" do
-      let(:name) { "aa"*144 }
+      let(:name) { "aa" * 144 }
       it { expect(item).to be_invalid }
     end
 

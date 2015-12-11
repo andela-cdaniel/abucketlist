@@ -1,7 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "Retrieving a bucketlist", type: :request do
-  subject(:user) { User.create(username: username, password: password, logged_in: true) }
+  subject(:user) do
+    User.create(username: username, password: password, logged_in: true)
+  end
+
   let(:username) { "Ikem" }
   let(:password) { "securepassword" }
   let(:data) { User.generate_jwt_token(user) }
@@ -11,10 +14,8 @@ RSpec.describe "Retrieving a bucketlist", type: :request do
       generate_bucketlists_for(user, 20)
 
       get api_v1_bucketlists_path, {},
-                                   {
-                                     "Accept" => "application/json",
-                                     "Authorization" => "Token token=#{data[:token]}"
-                                   }
+          "Accept" => "application/json",
+          "Authorization" => "Token token=#{data[:token]}"
 
       expect(response).to have_http_status(200)
       expect(response_body[:bucketlists].length).to eql(20)
@@ -26,10 +27,8 @@ RSpec.describe "Retrieving a bucketlist", type: :request do
       generate_bucketlists_for(user, 20)
 
       get api_v1_bucketlist_path(1), {},
-                                   {
-                                     "Accept" => "application/json",
-                                     "Authorization" => "Token token=#{data[:token]}"
-                                   }
+          "Accept" => "application/json",
+          "Authorization" => "Token token=#{data[:token]}"
 
       expect(response).to have_http_status(200)
       expect(response_body[:bucketlist][:id]).to eql(1)
@@ -38,9 +37,9 @@ RSpec.describe "Retrieving a bucketlist", type: :request do
 
   it "Returns not found if the bucketlist wasn't found" do
     get api_v1_bucketlist_path(20), {},
-                                    { "Accept" => "application/json",
-                                      "Authorization" => "Token token=#{data[:token]}"
-                                    }
+        "Accept" => "application/json",
+        "Authorization" => "Token token=#{data[:token]}"
+
     expect(response).to have_http_status(404)
     expect(response_body[:message]).to eql("Bucket list was not found")
   end
