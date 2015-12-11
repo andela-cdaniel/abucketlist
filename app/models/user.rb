@@ -19,11 +19,12 @@ class User < ActiveRecord::Base
             length: { in: 8..255 }
 
   def self.authorize(credentials = {})
-    user = User.find_by_username(credentials[:username].downcase)
+    if credentials[:username]
+      user = User.find_by_username(credentials[:username].downcase)
+    end
+
     if user && user.authenticate(credentials[:password])
       user
-    else
-      nil
     end
   end
 

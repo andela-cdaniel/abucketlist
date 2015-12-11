@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  root "users#index"
-
   post "/user/new" => "users#create"
   post "/auth/login" => "authorizations#create"
   get "/auth/logout" => "authorizations#destroy"
@@ -13,5 +11,6 @@ Rails.application.routes.draw do
     end
   end
 
-  match ":not_found" => "users#doc", via: :all, constraints: { not_found: /.*/ }
+  match ":not_found" =>
+        "application#doc", via: :all, constraints: { not_found: /.*/ }
 end
